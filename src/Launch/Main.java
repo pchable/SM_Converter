@@ -1,7 +1,11 @@
 package Launch;
 
+import Main.SupplierReader;
+
+
 public class Main
 {
+
         public static void main(String[] args)
         {
             String sourceFile = "Not Found";
@@ -20,6 +24,10 @@ public class Main
             }
 
             System.out.println("Source: " + sourceFile );
+            SupplierReader _Reader = new SupplierReader( sourceFile );
+            _Reader.read( sourceFile );
+
+
         }
 
 }
