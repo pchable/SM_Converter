@@ -15,6 +15,9 @@ public class Supplier
     Properties _Properties; // Information from the property file
     String[] _Headers = null;      // Supplier header columns
 
+    HashMap<String,String> _TagProposal;
+    HashMap<String, String> _TagNormalizer;
+
     FileWriter _Output = null;
     BufferedReader _Input = null;
 
@@ -40,12 +43,15 @@ public class Supplier
             _Properties = new Properties();
             FileInputStream ip = new FileInputStream( configFileName);
             _Properties.load(ip);
+
+            //_TagNormalizer = readTable( _Properties.getProperty( "TagNormalizer") );
+            _TagProposal = readTable( _Properties.getProperty( "TagProposal"));
         }
         catch( Exception pException )
         {
             System.out.println("Failed reading supplier config file: "  + pException.getMessage() );
         }
-        System.out.println("\nRead configuration for: " + _Properties.getProperty("Name"));
+
     }
 
     /** ==============================================
@@ -97,6 +103,50 @@ public class Supplier
         }
     }
 
+    /**
+     *  ====================================================================================
+     *
+     *  ReadTable
+     *
+     *
+     * @param pTableName to read
+     * @return HashMap with couple hint/tag
+     *
+     * ====================================================================================
+     */
+    public HashMap<String,String> readTable( String pTableName )
+    {
+        HashMap<String, String> table = new HashMap<String, String>();
+        String line;
+        String hint, tag;
+
+        try
+        {
+            // ---- Open Input
+            _Input = new BufferedReader(new FileReader(pTableName, Charset.forName("UTF-8")));
+
+            do
+            {
+                line = _Input.readLine();
+
+                if( line != null ) {
+                    String[] infos = line.split(";");
+                    hint = infos[0];
+                    tag = infos[1];
+
+                    table.put(hint, tag);
+                }
+            }
+            while( line != null );
+        }
+        catch( Exception pException )
+        {
+            System.out.println("Could not read table: " + pTableName );
+        }
+
+        return( table );
+    }
+
     /**** ========================================================================================================
      *
      *
@@ -107,7 +157,7 @@ public class Supplier
      */
     public void analyse()
     {
-        int count = 0;
+        int count=0;
         String line;
         boolean doRead = true;
         String headerLine;
@@ -138,14 +188,13 @@ public class Supplier
             System.out.println("Could not process header !");
         }
 
-
+        //
+        // ---- Loop over all lines in the file unless limited
+        //
         try
         {
             while( doRead )
             {
-
-
-                //
                 // ---- Read next line
                 //
                 line = _Input.readLine();
@@ -156,6 +205,8 @@ public class Supplier
                     count++;
                 }
 
+                // ---- Check if ended
+                //
                 if( ( line == null)  || ( count > maxRead ) )
                 {
                     doRead = false;
@@ -168,12 +219,36 @@ public class Supplier
         }
         catch( Exception pException )
         {
-            System.out.println("Error reading file: " + _Properties.getProperty("Source") );
-            System.out.println("Error " + pException.getMessage() );
+            System.out.println("*** Error reading file: " + _Properties.getProperty("Source") );
+            System.out.println("*** Error " + pException.getMessage() );
         }
 
-        System.out.println("Lines Processed: " + count );
-        return;
+        System.out.println("\tLines Processed: " + count );
+    }
+
+    /** ===================================================================================
+     * Get Column to split index
+     *
+     *
+     * @return column to split index
+     * ====================================================================================
+     */
+    public int getColumnToSplitIndex()
+    {
+        int index = -1;
+        String columnToSplitName;
+
+        columnToSplitName = _Properties.getProperty("ColumnToSplit");
+
+        for( index = 0; index < _Headers.length; index++ )
+        {
+            if( _Headers[index].equals( columnToSplitName ) )
+            {
+                break;
+            }
+        }
+
+        return( index );
     }
 
     /****************************************************************************************************************
@@ -192,7 +267,7 @@ public class Supplier
         // ---- Get Properties
         //
         String columnSplitter = _Properties.getProperty( "ColumnSplitter");
-        int columnToSplit = Integer.parseInt( _Properties.getProperty("ColumnToSplit") );
+        int columnToSplit = getColumnToSplitIndex();
 
         //
         // ---- Retrieve all columns
@@ -212,7 +287,6 @@ public class Supplier
         }
 
         return( item );
-
     }
 
     // =================================================================================
@@ -225,6 +299,9 @@ public class Supplier
     {
         HashMap<String, String> attributes;
         String[] attributeList;
+        String builtDesc = "";
+        int separatorIndex;
+        int count =0;
 
         //
         // ---- Init
@@ -234,10 +311,62 @@ public class Supplier
         attributeList = pAttributes.split( _Properties.getProperty( "AttributeSplitter"));
         for( String attribute: attributeList )
         {
-            attributes.put( "desc", attribute );
+            separatorIndex = attribute.indexOf(_Properties.getProperty("AttributeHeader"));
+
+            // ---- If contains the attribute header (:)
+            //
+            if( separatorIndex != -1)
+            {
+                String attributeKey = attribute.substring(0, separatorIndex);
+                String attributeValue = attribute.substring( separatorIndex+1, attribute.length());
+
+                attributes.put( attributeKey.trim(), attributeValue.trim() );
+            }
+            else
+            {
+                String tag_value[] = findTagInAttribute( attribute );
+
+                if( tag_value != null )
+                {
+                    attributes.put( tag_value[0], tag_value[1] );
+                }
+                else
+                {
+                    builtDesc += " " + attribute;
+                }
+            }
         }
 
+        //
+        // ---- Add desc
+        //
+        if( ! builtDesc.equals("") )
+        {
+            attributes.put("desc", builtDesc.trim() );
+        }
+
+
         return( attributes );
+    }
+
+    protected String[] findTagInAttribute( String pAttribute )
+    {
+        String tag_value[] = null;
+
+        for( Map.Entry<String, String> set : _TagProposal.entrySet() )
+        {
+            if( pAttribute.contains( set.getKey() ) )
+            {
+                tag_value = new String[2];
+                tag_value[0]=set.getValue();
+                tag_value[1]=pAttribute.trim();
+
+                break;
+            }
+        }
+
+        return( tag_value );
+
     }
 
 

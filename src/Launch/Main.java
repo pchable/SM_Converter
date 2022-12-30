@@ -2,6 +2,9 @@ package Launch;
 
 import Main.Supplier;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class Main
 {
@@ -11,8 +14,14 @@ public class Main
             String parameter;
             String supplierName = "None";
 
+            DateTimeFormatter  dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalDateTime start =LocalDateTime.now();
+
+
             System.out.println("\nWelcome to StoreMoov supplier file converter" );
             System.out.println("============================================\n" );
+
+            System.out.println("\tStarting at: " + dtf.format( start ));
 
             //
             // ---- Retrieve parameters
@@ -46,6 +55,6 @@ public class Main
             //
             // ---- And sign off
             //
-            System.out.println("\nProcessing Completed !");
+            System.out.println("\nProcessing Completed  at " + dtf.format(LocalDateTime.now() ) + " !");
         }
 }

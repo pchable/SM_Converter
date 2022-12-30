@@ -1,0 +1,43 @@
+﻿USB;connection
+Ethernet;connection
+pixels;resolution
+VGA;resolution
+cd;luminance
+GB;RAM
+DDR4;RAM
+RS232;connection
+mm;dimension
+dpi;resolution
+mm/s;speed
+WIFI;connection
+Bluetooth;connection
+VESA;mounting
+HDMI;connexion
+black;color
+grey;color
+RJ11;connection
+RJ12;connection
+RJ45;connection
+mAh;battery
+gris;color
+noir;color
+Intel;CPU
+';screen size
+802.11;connection
+IP52;protection
+IP68;protection
+1D;scan type
+2D ;scan type
+NFC;connexion
+Qualcomm;CPU
+GHZ;CPU
+4G;connection
+LTE;connection
+Android;OS
+IP67;protection
+3 years;warranty
+5 years;warranty
+IP54;protection
+5MP;camera
+13MP;camera
+12MP;camera

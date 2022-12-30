@@ -2,35 +2,51 @@
    "Items": 
    [
 	{
-		"longDescription":"ramasse-monnaie, �cran TFT, �cran large, 16:9, 17,8 cm (7''), 800x480 pixels, braquette VESA (75x75 mm), luminosit�, 350cd, angle de vue, 70/60� (H/V), contraste: 400:1, DVI, VGA, inclus: c�ble (VGA), bloc d'alimentation (UE), couleur: argent/noir",
+		"luminance":"350cd",
+		"screen size":"bloc d'alimentation (UE)",
 		"prix_public_HT":"188.55",
+		"16":"9",
+		"inclus":"c�ble (VGA)",
 		"sous_categorie":"Non tactiles",
 		"minimum_order_quantity":"1",
+		"couleur":"argent/noir",
 		"prix_stm_HT":"151.2",
-		"SKU":"JP-70CT001-00",
-		"desc":"Moniteurs (tactiles)",
+		"resolution":"VGA",
+		"contraste":"400:1",
 		"manufacturer":"GLANCETRON",
-		"stock_disponible":"131"
+		"stock_disponible":"131",
+		"Categorie":"Moniteurs (tactiles)",
+		"mounting":"braquette VESA (75x75 mm)",
+		"SKU":"JP-70CT001-00",
+		"desc":"ramasse-monnaie  �cran TFT  �cran large  17  luminosit�  angle de vue  70/60� (H/V)  DVI"
 	},
 	{
-		"longDescription":"ramasse-monnaie, �cran TFT, �cran large, 16:9, 17,8 cm (7''), 800x480 pixels, braquette VESA (75x75 mm), luminosit�, 350cd, angle de vue, 70/60� (H/V), contraste: 400:1, USB, inclus: c�ble (USB), couleur: argent/noir",
+		"luminance":"350cd",
+		"screen size":"8 cm (7'')",
 		"prix_public_HT":"399.5",
+		"16":"9",
+		"inclus":"c�ble (USB)",
 		"sous_categorie":"Non tactiles",
 		"minimum_order_quantity":"1",
+		"couleur":"argent/noir",
 		"prix_stm_HT":"201.2",
-		"SKU":"JP-70CTU01-01",
-		"desc":"Moniteurs (tactiles)",
+		"resolution":"800x480 pixels",
+		"contraste":"400:1",
 		"manufacturer":"GLANCETRON",
-		"stock_disponible":"81"
+		"stock_disponible":"81",
+		"Categorie":"Moniteurs (tactiles)",
+		"mounting":"braquette VESA (75x75 mm)",
+		"SKU":"JP-70CTU01-01",
+		"desc":"ramasse-monnaie  �cran TFT  �cran large  17  luminosit�  angle de vue  70/60� (H/V)  USB"
 	},
 	{
-		"longDescription":"Serrure de remplacement avec cl�",
+		"Categorie":"Tiroirs-caisses",
 		"prix_public_HT":"7.09",
 		"sous_categorie":"Ouverture vers l'avant",
 		"minimum_order_quantity":"1",
 		"prix_stm_HT":"6.25",
 		"SKU":"8045lock",
-		"desc":"Tiroirs-caisses",
+		"desc":"Serrure de remplacement avec cl�",
 		"manufacturer":"GLANCETRON",
 		"stock_disponible":"12"
 	}   ]
