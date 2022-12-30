@@ -1,6 +1,6 @@
 package Launch;
 
-import Main.SupplierReader;
+import Main.Supplier;
 
 
 public class Main
@@ -8,9 +8,35 @@ public class Main
 
         public static void main(String[] args)
         {
-            System.out.println("Bienvenue dans le convertisseur" );
-            SupplierReader reader = new SupplierReader();
-            reader.read();
+            String parameter;
+            String supplierName = "None";
 
+            System.out.println("\nWelcome to StoreMoov supplier file converter" );
+            System.out.println("============================================\n" );
+
+            for( int index = 0; index < args.length; index++ )
+            {
+                parameter = args[ index ];
+
+                switch( parameter )
+                {
+                    case "-Supplier":   supplierName = args[index+1];
+                                        break;
+                }
+            }
+
+            if( supplierName.equals("None") )
+            {
+                System.out.println("Could not find supplier name. Please provide using '-Supplier XXXXX' syntax" );
+            }
+            else
+            {
+                Supplier supplier = new Supplier(supplierName);
+                supplier.openUpIO();
+                supplier.analyse();
+                supplier.closeDownIO();
+            }
+
+            System.out.println("\nProcessing Completed !");
         }
 }
