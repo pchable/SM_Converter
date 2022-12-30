@@ -43,7 +43,7 @@ public class Supplier
         }
         catch( Exception pException )
         {
-            System.out.println("Failed reading supplier config file" );
+            System.out.println("Failed reading supplier config file: "  + pException.getMessage() );
         }
         System.out.println("\nRead configuration for: " + _Properties.getProperty("Name"));
     }

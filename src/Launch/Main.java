@@ -14,6 +14,9 @@ public class Main
             System.out.println("\nWelcome to StoreMoov supplier file converter" );
             System.out.println("============================================\n" );
 
+            //
+            // ---- Retrieve parameters
+            //
             for( int index = 0; index < args.length; index++ )
             {
                 parameter = args[ index ];
@@ -25,6 +28,9 @@ public class Main
                 }
             }
 
+            //
+            // ---- Run Supplier analysis
+            //
             if( supplierName.equals("None") )
             {
                 System.out.println("Could not find supplier name. Please provide using '-Supplier XXXXX' syntax" );
@@ -37,6 +43,9 @@ public class Main
                 supplier.closeDownIO();
             }
 
+            //
+            // ---- And sign off
+            //
             System.out.println("\nProcessing Completed !");
         }
 }
