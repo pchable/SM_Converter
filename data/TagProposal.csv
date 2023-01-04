@@ -1,38 +1,45 @@
-﻿USB;connection
-Ethernet;connection
-pixels;resolution
+﻿pixels;resolution
 VGA;resolution
+pixels;resolution
 cd;luminance
 GB;RAM
 DDR4;RAM
-RS232;connection
-mm;dimension
+RAM;RAM
+SO-DIMM;RAM
+mm ;dimension
 dpi;resolution
 mm/s;speed
 WIFI;connection
+RS232;connection
 Bluetooth;connection
-VESA;mounting
-HDMI;connexion
-black;color
-grey;color
 RJ11;connection
 RJ12;connection
 RJ45;connection
-mAh;battery
+4G;connection
+Display Port;connection
+DisplayPort;connection
+LTE;connection
+HDMI;connection
+NFC;connection
+USB;connection
+Ethernet;connection
+VESA;mounting
+black;color
+grey;color
 gris;color
 noir;color
+mAh;battery
 Intel;CPU
-';screen size
+Qualcomm;CPU
+'';screen size
 802.11;connection
 IP52;protection
 IP68;protection
 1D;scan type
 2D ;scan type
-NFC;connexion
 Qualcomm;CPU
 GHZ;CPU
-4G;connection
-LTE;connection
+MHz;CPU
 Android;OS
 IP67;protection
 3 years;warranty
@@ -40,4 +47,6 @@ IP67;protection
 IP54;protection
 5MP;camera
 13MP;camera
+13 MP;camera
 12MP;camera
+12 MP;camera

@@ -16,6 +16,7 @@ public class Main
 
             DateTimeFormatter  dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
             LocalDateTime start =LocalDateTime.now();
+            LocalDateTime end;
 
 
             System.out.println("\nWelcome to StoreMoov supplier file converter" );
@@ -55,6 +56,9 @@ public class Main
             //
             // ---- And sign off
             //
-            System.out.println("\nProcessing Completed  at " + dtf.format(LocalDateTime.now() ) + " !");
+            end = LocalDateTime.now();
+
+            System.out.println("\n\tProcessing Completed:");
+            System.out.println("\t\tTime: " + dtf.format( end ) );
         }
 }

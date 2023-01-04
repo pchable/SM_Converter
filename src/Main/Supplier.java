@@ -21,6 +21,8 @@ public class Supplier
     FileWriter _Output = null;
     BufferedReader _Input = null;
 
+    final String fileEncoding = "ISO-8859-1";
+
     /** ==============================================
      *
      *
@@ -44,8 +46,12 @@ public class Supplier
             FileInputStream ip = new FileInputStream( configFileName);
             _Properties.load(ip);
 
-            //_TagNormalizer = readTable( _Properties.getProperty( "TagNormalizer") );
+            _TagNormalizer = readTable( _Properties.getProperty( "TagNormalizer") );
             _TagProposal = readTable( _Properties.getProperty( "TagProposal"));
+
+            System.out.println("\n\tExtract Tables: ");
+            System.out.println("\t\t Normalizer: " + _TagNormalizer.size() );
+            System.out.println("\t\t Proposal: " + _TagProposal.size() );
         }
         catch( Exception pException )
         {
@@ -67,10 +73,10 @@ public class Supplier
         {
 
             // ---- Open Input
-            _Input = new BufferedReader(new FileReader(_Properties.getProperty("Source"), Charset.forName("UTF-8")));
+            _Input = new BufferedReader(new FileReader(_Properties.getProperty("Source"), Charset.forName(fileEncoding)));
 
             // ---- Open Ouput & init file
-            _Output = new FileWriter(_Properties.getProperty("Target"), Charset.forName("UTF-8"));
+            _Output = new FileWriter(_Properties.getProperty("Target"), Charset.forName(fileEncoding));
             _Output.write("{\n");
             _Output.write("   \"Items\": \n   [\n");
         }
@@ -123,7 +129,7 @@ public class Supplier
         try
         {
             // ---- Open Input
-            _Input = new BufferedReader(new FileReader(pTableName, Charset.forName("UTF-8")));
+            _Input = new BufferedReader(new FileReader(pTableName, Charset.forName(fileEncoding)));
 
             do
             {
@@ -317,37 +323,75 @@ public class Supplier
             //
             if( separatorIndex != -1)
             {
-                String attributeKey = attribute.substring(0, separatorIndex);
+                String attributeKey = normalizeTagName( attribute.substring(0, separatorIndex) );
                 String attributeValue = attribute.substring( separatorIndex+1, attribute.length());
 
-                attributes.put( attributeKey.trim(), attributeValue.trim() );
+                updateEntry(  attributes, attributeKey.trim(), attributeValue.trim() );
             }
             else
+            //
+            // ---- Otherwise try to guess what is feasible
+            //
             {
+                //
+                // ---- Is there a specific content inducing tag (eg: USB -> connection)
+                //
                 String tag_value[] = findTagInAttribute( attribute );
 
                 if( tag_value != null )
                 {
-                    attributes.put( tag_value[0], tag_value[1] );
+                    updateEntry( attributes, tag_value[0], tag_value[1] );
                 }
                 else
                 {
+                    //
+                    // ---- Otherwise just put everyting in a global decription
+                    //
                     builtDesc += " " + attribute;
                 }
             }
         }
+
 
         //
         // ---- Add desc
         //
         if( ! builtDesc.equals("") )
         {
-            attributes.put("desc", builtDesc.trim() );
+            updateEntry( attributes, "desc", builtDesc.trim() );
         }
 
 
         return( attributes );
     }
+
+    // =================================================================================
+    //
+    //   update Attribute
+    //   Hashmap may contain only one key value
+    //   If already present in the table, modify the value
+    //
+    // =================================================================================
+    protected void updateEntry( HashMap<String, String> pTable, String pKey, String pValue )
+    {
+        if( pTable.containsKey( pKey ) )
+        {
+            String value = pTable.get( pKey );
+            value += ", " + pValue;
+            pTable.replace( pKey, value );
+        }
+        else
+        {
+            pTable.put( pKey, pValue );
+        }
+    }
+
+    // =================================================================================
+    //
+    //   Find Tag in Attribute
+    //   Checks of a specific value is present and deduce the associated tag
+    //
+    // =================================================================================
 
     protected String[] findTagInAttribute( String pAttribute )
     {
@@ -367,6 +411,29 @@ public class Supplier
 
         return( tag_value );
 
+    }
+
+    // =================================================================================
+    //
+    //  Normalize tag
+    //  If a tag is present propose the fixed associated value
+    //  eg fist -> fits
+    //
+    // =================================================================================
+
+    protected String normalizeTagName( String pTag )
+    {
+        String fix = pTag;
+
+        for( Map.Entry<String, String> set : _TagNormalizer.entrySet() )
+        {
+            if( pTag.equals( set.getKey()))
+            {
+                fix = set.getValue();
+            }
+        }
+
+        return( fix );
     }
 
 
